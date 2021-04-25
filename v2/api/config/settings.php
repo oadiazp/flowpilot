@@ -4,6 +4,7 @@ use Monolog\Logger;
 
 use function DI\env;
 
+
 return [
     'settings' => [
         'displayErrorDetails' => true, // Should be set to false in production

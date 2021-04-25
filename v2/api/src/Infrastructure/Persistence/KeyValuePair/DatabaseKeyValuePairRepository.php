@@ -3,11 +3,11 @@
 namespace App\Infrastructure\Persistence\KeyValuePair;
 
 
+use App\Domain\KeyValuePair\KeyNotFoundException;
 use App\Domain\KeyValuePair\KeyValuePair;
 use App\Domain\KeyValuePair\KeyValuePairRepository;
-use App\Infrastructure\Persistence\KeyValuePair\AbstractDatabaseRepository;
+use App\Infrastructure\Persistence\AbstractDatabaseRepository;
 use Doctrine\ORM\EntityManager;
-use KeyNotFoundException;
 use function Webmozart\Assert\Tests\StaticAnalysis\null;
 
 class DatabaseKeyValuePairRepository extends AbstractDatabaseRepository implements KeyValuePairRepository
@@ -42,6 +42,29 @@ class DatabaseKeyValuePairRepository extends AbstractDatabaseRepository implemen
 
     public function delete(string $key): void
     {
-        // TODO: Implement delete() method.
+        $keyValuePair = $this->findByKey($key);
+        $this->entity_manager->remove($keyValuePair);
+        $this->entity_manager->flush();
+    }
+
+    public function validateThatTheKeyExists(string $key): bool
+    {
+        $keyValuePair = $this->findByKey($key);
+
+        if (null === $keyValuePair) {
+            throw new KeyNotFoundException();
+        }
+
+        return true;
+    }
+
+    public function updateKey(string $key, string $value): KeyValuePair
+    {
+        $keyValuePair = $this->findByKey($key);
+        $keyValuePair->setValue($value);
+        $this->entity_manager->persist($keyValuePair);
+        $this->entity_manager->flush();
+
+        return $keyValuePair;
     }
 }

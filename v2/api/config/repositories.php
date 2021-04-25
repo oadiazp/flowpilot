@@ -1,10 +1,11 @@
 <?php declare(strict_types=1);
 
-use App\Domain\User\UserRepository;
-use App\Infrastructure\Persistence\User\DatabaseUserRepository;
+use App\Domain\KeyValuePair\KeyValuePairRepository;
+use App\Infrastructure\Persistence\KeyValuePair\DatabaseKeyValuePairRepository;
+
 
 use function DI\autowire;
 
 return [
-    UserRepository::class => autowire(DatabaseUserRepository::class),
+    KeyValuePairRepository::class => autowire(DatabaseKeyValuePairRepository::class),
 ];

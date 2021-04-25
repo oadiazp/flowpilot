@@ -32,4 +32,9 @@ class KeyValuePair implements JsonSerializable
             'value' => $this->getValue(),
         ];
     }
+
+    public function setValue(string $value)
+    {
+        $this->value = $value;
+    }
 }

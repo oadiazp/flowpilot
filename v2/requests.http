@@ -1,0 +1,9 @@
+POST http://localhost:8080/keyvalues
+Content-Type: application/json
+
+{
+ "key": "foo",
+ "value": "bar"
+}
+
+###

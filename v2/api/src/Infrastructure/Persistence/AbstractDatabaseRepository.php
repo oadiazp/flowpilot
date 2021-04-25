@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Infrastructure\Persistence\KeyValuePair;
+namespace App\Infrastructure\Persistence;
 
 
 use Doctrine\ORM\EntityManager;
