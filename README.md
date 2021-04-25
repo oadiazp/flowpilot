@@ -5,6 +5,7 @@
 git clone git@github.com:oadiazp/flowpilot.git
 cd flowpilot/
 docker-compose up
+docker-compose exec api bash
 cd api
 composer install
 ./cli.php migrations:migrate
