@@ -1,41 +1,43 @@
 <?php
 
-// bootstrap.php
-
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Cache\FilesystemCache;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Tools\Setup;
-use Slim\Container;
+use DI\Container;
 
 require_once __DIR__ . '/vendor/autoload.php';
+$settings = require_once __DIR__ . '/settings.php';
 
-$container = new Container(require __DIR__ . '/settings.php');
 
-$container[EntityManager::class] = function (Container $container): EntityManager {
+
+$container = new Container();
+
+$container->set(EntityManager::class, function (Container $container) use ($settings): EntityManager {
     $config = Setup::createAnnotationMetadataConfiguration(
-        $container['settings']['doctrine']['metadata_dirs'],
-        $container['settings']['doctrine']['dev_mode']
+        $settings['doctrine']['metadata_dirs'],
+        $settings['doctrine']['dev_mode']
     );
 
     $config->setMetadataDriverImpl(
         new AnnotationDriver(
             new AnnotationReader,
-            $container['settings']['doctrine']['metadata_dirs']
+            $settings['doctrine']['metadata_dirs']
         )
     );
 
     $config->setMetadataCacheImpl(
         new FilesystemCache(
-            $container['settings']['doctrine']['cache_dir']
+            $settings['doctrine']['cache_dir']
         )
     );
 
     return EntityManager::create(
-        $container['settings']['doctrine']['connection'],
+        $settings['doctrine']['connection'],
         $config
     );
-};
+}
+);
 
 return $container;
