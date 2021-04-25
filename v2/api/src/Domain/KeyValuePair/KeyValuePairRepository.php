@@ -11,4 +11,8 @@ interface KeyValuePairRepository
     public function findByKey(string $key): KeyValuePair;
 
     public function delete(string $key): void;
+
+    public function validateThatTheKeyExists(string $key): bool;
+
+    public function updateKey(string $key, string $value): KeyValuePair;
 }

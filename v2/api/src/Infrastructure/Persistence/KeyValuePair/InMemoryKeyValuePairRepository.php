@@ -44,15 +44,33 @@ class InMemoryKeyValuePairRepository implements KeyValuePairRepository
 
     public function findByKey(string $key): KeyValuePair
     {
-        if (!isset($this->keyValuePairs[$key])) {
-            throw new KeyNotFoundException();
-        }
+        $this->validateThatTheKeyExists($key);
 
         return $this->keyValuePairs[$key];
     }
 
     public function delete(string $key): void
     {
-        // TODO: Implement delete() method.
+        $this->validateThatTheKeyExists($key);
+
+        unset($this->keyValuePairs[$key]);
+    }
+
+    public function validateThatTheKeyExists(string $key): bool
+    {
+        if (!isset($this->keyValuePairs[$key])) {
+            throw new KeyNotFoundException();
+        }
+
+        return true;
+    }
+
+    public function updateKey(string $key, string $value): KeyValuePair
+    {
+        $this->validateThatTheKeyExists($key);
+
+        $this->keyValuePairs[$key] = new KeyValuePair($key, $value);
+
+        return $this->keyValuePairs[$key];
     }
 }
